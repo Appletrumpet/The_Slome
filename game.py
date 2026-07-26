@@ -1,5 +1,9 @@
 import pyxel
+import sys
 import time
+
+# Quitting makes no sense in the browser build, so the menu hides it there
+IS_WEB = sys.platform == "emscripten"
 
 # Global Var
 level_num = -1
@@ -176,7 +180,8 @@ class Menu:
         self.options_button.draw_level_selecting_button(-3)
         self.skins_button.draw_level_selecting_button(-4)
         self.skill_tree_button.draw_level_selecting_button(-5)
-        self.quit_button.draw_level_selecting_button(-6)
+        if not IS_WEB:
+            self.quit_button.draw_level_selecting_button(-6)
 
         self.mouse.draw()
 

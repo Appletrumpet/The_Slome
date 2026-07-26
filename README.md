@@ -1,11 +1,10 @@
 # The Slome
 
-<!-- TODO: replace with a real gameplay GIF -->
 ![Gameplay](docs/gameplay.gif)
 
 The Slome is a small retro platformer built with [Pyxel](https://github.com/kitao/pyxel): guide a slime through the level to the portal as fast as you can, collect orbs along the way, and beat the medal times to earn bronze, silver, and gold.
 
-**[▶ Play in browser](#)** <!-- TODO: add GitHub Pages URL -->
+**[▶ Play in browser](https://theslome.silvanguntlin.com)**
 
 ## Controls
 

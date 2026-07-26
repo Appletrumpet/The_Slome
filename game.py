@@ -162,11 +162,7 @@ class Menu:
         self.records_button = Button(
             32, 96, 32, 112, 120, 72, 48, 16, "RECORDS >", 0, 7, 7
         )
-        self.options_button = Button(
-            32, 96, 32, 112, 120, 94, 48, 16, "OPTIONS >", 0, 7, 7
-        )
         self.skins_button = Button(16, 64, 16, 80, 98, 50, 16, 16, "", 0, 7, 7)
-        self.skill_tree_button = Button(0, 64, 0, 80, 98, 72, 16, 16, "", 0, 7, 7)
         self.quit_button = Button(112, 64, 112, 80, 98, 94, 16, 16, "", 0, 7, 7)
 
         # Creates a mouse instance
@@ -177,9 +173,7 @@ class Menu:
 
         self.play_button.draw_level_selecting_button(0)
         self.records_button.draw_level_selecting_button(-2)
-        self.options_button.draw_level_selecting_button(-3)
         self.skins_button.draw_level_selecting_button(-4)
-        self.skill_tree_button.draw_level_selecting_button(-5)
         if not IS_WEB:
             self.quit_button.draw_level_selecting_button(-6)
 
@@ -195,12 +189,9 @@ class Records_Menu:
     def draw(self):
         pyxel.bltm(0, 0, 0, 384, 0, 192, 128)
         self.return_to_menu.draw_level_selecting_button(-1)
-        for key, value in records_dic.items():
-            level = key
-            record_time = round(value, 2)
-            x = 48
-            y = 16
-            pyxel.text(x, y, f"Level {level}: {record_time}s", 7)
+        y = 16
+        for level, record_time in records_dic.items():
+            pyxel.text(48, y, f"Level {level}: {round(record_time, 2)}s", 7)
             y += 8
 
         self.mouse.draw()
@@ -499,6 +490,7 @@ class Medals:
     def check_gold_medal(self):
         if medals_per_level[level_num - 1][2] is not None:
             return True
+        return False
 
 
 # Creates a level class for the first level
@@ -837,9 +829,9 @@ class App:
 
     def update(self):
         global level_num
+        if level_num == -4:
+            self.skins_menu.update()
         if level_num == 1:
-            if self.level1.time_counter.start_time is None:
-                self.level1.restart_level()
             self.level1.update()
 
     def draw(self):

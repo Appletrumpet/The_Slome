@@ -6,7 +6,6 @@ level_num = -1
 skin_number = 0
 level_completed = False
 paused = False
-new_record = False
 reset = False
 
 total_orb_counter = 0
@@ -18,17 +17,30 @@ x_pos = 16
 y_pos = 104
 
 # Level 1
-block_pos_l1 = [(40, 104), (48, 104), (56, 104), (72, 88), (80, 88), (88, 88), (102, 72), (110, 72), (118, 72), 
-                (126, 72), (134, 72)]
+block_pos_l1 = [
+    (40, 104),
+    (48, 104),
+    (56, 104),
+    (72, 88),
+    (80, 88),
+    (88, 88),
+    (102, 72),
+    (110, 72),
+    (118, 72),
+    (126, 72),
+    (134, 72),
+]
 coin_pos_l1 = [(74, 82)]
 medal_times = [(160, 140, 120)]
 medals_per_level = [[None, None, None]]
 
 records_dic = {}
 
+
 # Defines a main function which runs the full program
 def main():
     App()
+
 
 # Creates a class for a mouse point
 class Mouse:
@@ -38,14 +50,30 @@ class Mouse:
         self.y = 8
         self.w = 4
         self.h = 4
-    
+
     def draw(self):
-        pyxel.blt(pyxel.mouse_x, pyxel.mouse_y, self.img, self.x, self.y, self.w, self.h)
+        pyxel.blt(
+            pyxel.mouse_x, pyxel.mouse_y, self.img, self.x, self.y, self.w, self.h
+        )
+
 
 # Creates a class for buttons
 class Button:
-    def __init__(self, x1, y1, x2, y2, button_x, button_y, width, height, text, img,
-                 text_color1, text_color2):
+    def __init__(
+        self,
+        x1,
+        y1,
+        x2,
+        y2,
+        button_x,
+        button_y,
+        width,
+        height,
+        text,
+        img,
+        text_color1,
+        text_color2,
+    ):
         # General Button Attributes
         self.button_x = button_x
         self.button_y = button_y
@@ -63,26 +91,48 @@ class Button:
         self.color2 = text_color2
 
     def detect_click(self):
-        if (self.button_x <= pyxel.mouse_x <= self.button_x + self.width and
-            self.button_y <= pyxel.mouse_y <= self.button_y + self.height and
-            pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT)):
+        if (
+            self.button_x <= pyxel.mouse_x <= self.button_x + self.width
+            and self.button_y <= pyxel.mouse_y <= self.button_y + self.height
+            and pyxel.btnp(pyxel.MOUSE_BUTTON_LEFT)
+        ):
             return True
         return False
-    
+
     def detect_hovering(self):
-        if (self.button_x <= pyxel.mouse_x <= self.button_x + self.width and
-            self.button_y <= pyxel.mouse_y <= self.button_y + self.height):
+        if (
+            self.button_x <= pyxel.mouse_x <= self.button_x + self.width
+            and self.button_y <= pyxel.mouse_y <= self.button_y + self.height
+        ):
             return True
         return False
-    
+
     def draw_normal_state_button(self):
-        pyxel.blt(self.button_x, self.button_y, self.img, self.x1, self.y1, self.width, self.height, 0)
+        pyxel.blt(
+            self.button_x,
+            self.button_y,
+            self.img,
+            self.x1,
+            self.y1,
+            self.width,
+            self.height,
+            0,
+        )
         pyxel.text(self.button_x + 4, self.button_y + 6, self.text, self.color1)
 
     def draw_hovered_state_button(self):
-        pyxel.blt(self.button_x, self.button_y, self.img, self.x2, self.y2, self.width, self.height, 0)
+        pyxel.blt(
+            self.button_x,
+            self.button_y,
+            self.img,
+            self.x2,
+            self.y2,
+            self.width,
+            self.height,
+            0,
+        )
         pyxel.text(self.button_x + 4, self.button_y + 6, self.text, self.color2)
-    
+
     def draw_level_selecting_button(self, level_to_move_to):
         self.draw_normal_state_button()
         if self.detect_click():
@@ -90,6 +140,7 @@ class Button:
             level_num = level_to_move_to
         if self.detect_hovering():
             self.draw_hovered_state_button()
+
 
 # Creates a class for the menu screen
 class Menu:
@@ -101,9 +152,15 @@ class Menu:
         self.height = 128
 
         # Add more Buttons later
-        self.play_button = Button(32, 96, 32, 112, 120, 50, 48, 16, "PLAY    >", 0, 7, 7)
-        self.records_button = Button(32, 96, 32, 112, 120, 72, 48, 16, "RECORDS >", 0, 7, 7)
-        self.options_button = Button(32, 96, 32, 112, 120, 94, 48, 16, "OPTIONS >", 0, 7, 7)
+        self.play_button = Button(
+            32, 96, 32, 112, 120, 50, 48, 16, "PLAY    >", 0, 7, 7
+        )
+        self.records_button = Button(
+            32, 96, 32, 112, 120, 72, 48, 16, "RECORDS >", 0, 7, 7
+        )
+        self.options_button = Button(
+            32, 96, 32, 112, 120, 94, 48, 16, "OPTIONS >", 0, 7, 7
+        )
         self.skins_button = Button(16, 64, 16, 80, 98, 50, 16, 16, "", 0, 7, 7)
         self.skill_tree_button = Button(0, 64, 0, 80, 98, 72, 16, 16, "", 0, 7, 7)
         self.quit_button = Button(112, 64, 112, 80, 98, 94, 16, 16, "", 0, 7, 7)
@@ -122,6 +179,7 @@ class Menu:
         self.quit_button.draw_level_selecting_button(-6)
 
         self.mouse.draw()
+
 
 # Creates a class for the records menu
 class Records_Menu:
@@ -142,7 +200,8 @@ class Records_Menu:
 
         self.mouse.draw()
 
-# Creates a class for the options menu
+
+# Creates a class for the options menu
 class Options_Menu:
     def __init__(self):
         self.return_to_menu = Button(32, 64, 32, 80, 16, 16, 16, 16, "<-", 0, 7, 7)
@@ -153,6 +212,7 @@ class Options_Menu:
         self.return_to_menu.draw_level_selecting_button(-1)
 
         self.mouse.draw()
+
 
 # Creates a class for the level selecting menu
 class Level_Menu:
@@ -183,6 +243,7 @@ class Level_Menu:
 
         self.mouse.draw()
 
+
 # Creates a class for the Skins Menu
 class Skins_Menu:
     def __init__(self):
@@ -198,7 +259,7 @@ class Skins_Menu:
             self.slime_skins.change_skin_to(0)
         elif self.white.detect_click():
             self.slime_skins.change_skin_to(1)
-    
+
     def draw(self):
         pyxel.bltm(0, 0, 0, 384, 0, 192, 128)
         self.return_to_menu.draw_level_selecting_button(-1)
@@ -207,6 +268,7 @@ class Skins_Menu:
         self.white.draw_normal_state_button()
 
         self.mouse.draw()
+
 
 class Slime_Skins:
     def __init__(self):
@@ -223,34 +285,36 @@ class Slime_Skins:
                 if skin_number == 0:
                     pyxel.blt(x_pos, y_pos, self.img, 0, 0, 8, 16, 0)
                 elif skin_number == 1:
-                    pyxel.blt(x_pos, y_pos, self.img, 0, 16, 8, 16 , 0)
+                    pyxel.blt(x_pos, y_pos, self.img, 0, 16, 8, 16, 0)
             else:
                 if skin_number == 0:
                     pyxel.blt(x_pos, y_pos, self.img, 8, 0, 8, 16, 0)
                 elif skin_number == 1:
-                    pyxel.blt(x_pos, y_pos, self.img, 8, 16, 8, 16 , 0)
+                    pyxel.blt(x_pos, y_pos, self.img, 8, 16, 8, 16, 0)
         else:
             if right:
                 if skin_number == 0:
                     pyxel.blt(x_pos, y_pos, self.img, 16, 0, 8, 16, 0)
                 elif skin_number == 1:
-                    pyxel.blt(x_pos, y_pos, self.img, 16, 16, 8, 16 , 0)
+                    pyxel.blt(x_pos, y_pos, self.img, 16, 16, 8, 16, 0)
             else:
                 if skin_number == 0:
                     pyxel.blt(x_pos, y_pos, self.img, 24, 0, 8, 16, 0)
                 elif skin_number == 1:
-                    pyxel.blt(x_pos, y_pos, self.img, 24, 16, 8, 16 , 0)
+                    pyxel.blt(x_pos, y_pos, self.img, 24, 16, 8, 16, 0)
+
 
 # Creates a class for the Skill Tree menu
 class Skill_Tree_Menu:
     def __init__(self):
         self.return_to_menu = Button(32, 64, 32, 80, 16, 16, 16, 16, "<-", 0, 7, 7)
         self.mouse = Mouse()
-    
+
     def draw(self):
         pyxel.bltm(0, 0, 0, 384, 0, 192, 128)
         self.return_to_menu.draw_level_selecting_button(-1)
         self.mouse.draw()
+
 
 # Creates a class for the Quit function
 class Quit:
@@ -259,6 +323,7 @@ class Quit:
 
     def quit_game(self):
         pyxel.quit()
+
 
 # Creates a class for the time needed to complete a level
 class Time:
@@ -279,7 +344,8 @@ class Time:
         self.stopped_time = self.total_time
         self.start_time = 0
         self.stopped = True
-    
+
+
 # Creates a class for the finish portal
 class Portal:
     def __init__(self, x, y):
@@ -293,6 +359,7 @@ class Portal:
 
     def draw(self):
         pyxel.blt(self.x, self.y, 0, 64, 0, 16, 16)
+
 
 # Creates a class for the completed (finish) level screen
 class Completed_Level_Screen:
@@ -310,18 +377,28 @@ class Completed_Level_Screen:
         self.silver = False
         self.gold = False
 
-        self.restart_button = Button(32, 96, 32, 112, 72, 64, 48, 16, "RESTART >", 0, 7, 7)
-        self.levels_button = Button(32, 96, 32, 112, 72, 83, 48, 16, "LEVELS  >", 0, 7, 7)
-        self.menu_button = Button(32, 96, 32, 112, 72, 102, 48, 16, "MENU    >", 0, 7, 7)
+        self.restart_button = Button(
+            32, 96, 32, 112, 72, 64, 48, 16, "RESTART >", 0, 7, 7
+        )
+        self.levels_button = Button(
+            32, 96, 32, 112, 72, 83, 48, 16, "LEVELS  >", 0, 7, 7
+        )
+        self.menu_button = Button(
+            32, 96, 32, 112, 72, 102, 48, 16, "MENU    >", 0, 7, 7
+        )
 
         self.mouse = Mouse()
-    
+
     def update(self, current_time):
         if time.time() - self.last_time >= 0.5:
             self.last_time = time.time()
             self.text_color = 10 if self.text_color == 7 else 7
-        if (self.levels_button.detect_click() or self.menu_button.detect_click() or 
-            self.restart_button.detect_click() or pyxel.btnp(pyxel.KEY_R)):
+        if (
+            self.levels_button.detect_click()
+            or self.menu_button.detect_click()
+            or self.restart_button.detect_click()
+            or pyxel.btnp(pyxel.KEY_R)
+        ):
             global reset
             global level_completed
             level_completed = False
@@ -344,25 +421,30 @@ class Completed_Level_Screen:
         if self.record:
             pyxel.text(76, 40, "NEW RECORD!", 10)
         pyxel.text(76, 48, f"TIME: {round(self.current_time, 2)}", 0)
-        pyxel.text(74 , 56, f"RECORD: {round(self.record_time, 2)}", 0)
+        pyxel.text(74, 56, f"RECORD: {round(self.record_time, 2)}", 0)
         if self.bronze:
             pyxel.blt(76, 24, 0, 32, 160, 16, 16, 0)
         if self.silver:
             pyxel.blt(88, 24, 0, 32, 144, 16, 16, 0)
         if self.gold:
             pyxel.blt(100, 24, 0, 32, 128, 16, 16, 0)
-        
+
         self.menu_button.draw_level_selecting_button(-1)
         self.levels_button.draw_level_selecting_button(0)
         self.restart_button.draw_level_selecting_button(level_num)
 
         self.mouse.draw()
 
+
 # Creates a Pause Menu class
 class Pause_Menu:
     def __init__(self):
-        self.continue_button = Button(32, 96, 32, 112, 72, 50, 48, 16, "CONTINUE >", 0, 7, 7)
-        self.restart_button = Button(32, 96, 32, 112, 72, 72, 48, 16, "RESTART  >", 0, 7, 7)
+        self.continue_button = Button(
+            32, 96, 32, 112, 72, 50, 48, 16, "CONTINUE >", 0, 7, 7
+        )
+        self.restart_button = Button(
+            32, 96, 32, 112, 72, 72, 48, 16, "RESTART  >", 0, 7, 7
+        )
         self.menu_button = Button(32, 96, 32, 112, 72, 94, 48, 16, "MENU    >", 0, 7, 7)
         self.mouse = Mouse()
 
@@ -371,7 +453,7 @@ class Pause_Menu:
         self.v = 0
         self.width = 192
         self.height = 128
-        
+
         self.restart = False
 
     def update(self):
@@ -391,17 +473,14 @@ class Pause_Menu:
             pyxel.blt(64, 16, 0, 48, 64, 64, 24, 0)
             pyxel.text(80, 22, "PAUSE ||", 7)
             pyxel.text(10, 10, "Level 1", 2)
-            global level_num
             self.continue_button.draw_level_selecting_button(level_num)
             self.restart_button.draw_level_selecting_button(level_num)
             self.menu_button.draw_level_selecting_button(-1)
             self.mouse.draw()
 
+
 # Creates a medal class
 class Medals:
-    def __init__(self):
-        self.medals_per_level = medals_per_level
-
     def check_bronze_medal(self):
         if medals_per_level[level_num - 1][0] is not None:
             return True
@@ -415,6 +494,7 @@ class Medals:
     def check_gold_medal(self):
         if medals_per_level[level_num - 1][2] is not None:
             return True
+
 
 # Creates a level class for the first level
 class Level1:
@@ -430,14 +510,16 @@ class Level1:
         self.wall_right = 176
 
         self.time_counter = Time()
-        self.coins = [Coin(1, coin_pos_l1[i][0], coin_pos_l1[i][1]) for i in range(len(coin_pos_l1))]
+        self.coins = [
+            Coin(1, coin_pos_l1[i][0], coin_pos_l1[i][1])
+            for i in range(len(coin_pos_l1))
+        ]
         self.portal = Portal(126, 56)
         self.level_orb_counter = 0
 
         global block_pos_l1
         self.block_positions = block_pos_l1
 
-        self.completed_screen = None
         self.pause_menu = Pause_Menu()
         self.completed_screen = Completed_Level_Screen()
         global reset
@@ -471,7 +553,7 @@ class Level1:
         global x_pos
         global y_pos
         global level_completed
-        
+
         if reset:
             self.restart_level()
             return
@@ -482,11 +564,11 @@ class Level1:
                 self.restart_level()
             self.pause_menu.update()
             return
-        
+
         self.time_counter.stopped = False
 
         self.slime.movement(self.collision)
-        
+
         self.level_orb_counter = 0
         for coin in self.coins:
             coin.check_if_coin_nearby(5, x_pos, y_pos)
@@ -506,7 +588,6 @@ class Level1:
         global level_completed
         global total_orb_counter
         global records_dic
-        global new_record
         global bronze_medals
         global silver_medals
         global gold_medals
@@ -519,24 +600,31 @@ class Level1:
         level_completed = True
 
         self.time_counter.stop()
-        self.current_time =  self.time_counter.stopped_time
+        self.current_time = self.time_counter.stopped_time
         # Check for Record Time
         if level_num not in records_dic or self.current_time < records_dic[level_num]:
             records_dic[level_num] = self.current_time
-            new_record = True
         # Check for Bronze Medal
-        if self.current_time < medal_times[level_num - 1][0] and medals_per_level[level_num - 1][0] is None:
+        if (
+            self.current_time < medal_times[level_num - 1][0]
+            and medals_per_level[level_num - 1][0] is None
+        ):
             bronze_medals += 1
             medals_per_level[level_num - 1][0] = True
         # Check for Silver Medal
-        if self.current_time < medal_times[level_num - 1][1] and medals_per_level[level_num - 1][1] is None:
+        if (
+            self.current_time < medal_times[level_num - 1][1]
+            and medals_per_level[level_num - 1][1] is None
+        ):
             silver_medals += 1
             medals_per_level[level_num - 1][1] = True
         # Check for Gold Medal
-        if self.current_time < medal_times[level_num - 1][2] and medals_per_level[level_num - 1][2] is None:
+        if (
+            self.current_time < medal_times[level_num - 1][2]
+            and medals_per_level[level_num - 1][2] is None
+        ):
             gold_medals += 1
             medals_per_level[level_num - 1][2] = True
-
 
     def draw(self):
         global paused
@@ -549,7 +637,7 @@ class Level1:
             pyxel.text(10, 20, f"{self.time_counter.update()}s", 7)
             for coin in self.coins:
                 coin.draw()
-            pyxel.text(10,30, f"Orbs: {self.level_orb_counter}", 7)
+            pyxel.text(10, 30, f"Orbs: {self.level_orb_counter}", 7)
             self.draw_blocks()
             self.portal.draw()
             self.slime.draw()
@@ -560,7 +648,8 @@ class Level1:
         elif paused:
             self.pause_menu.draw()
             pyxel.text(10, 20, f"{self.time_counter.update()}s", 7)
-            pyxel.text(10,30, f"Orbs: {self.level_orb_counter}", 7)
+            pyxel.text(10, 30, f"Orbs: {self.level_orb_counter}", 7)
+
 
 # Creates a class for the slime sprite
 class Slime:
@@ -568,7 +657,6 @@ class Slime:
         self.x = x
         self.y = y
         self.speed = 1
-        self.up = 0
         self.right = True
         self.y_velocity = 0
         self.is_jumping = False
@@ -593,7 +681,7 @@ class Slime:
             if self.current_time - self.crouch_time >= self.freeze_duration:
                 self.frozen = False
             else:
-                return  
+                return
         # Slime moves left
         if pyxel.btn(pyxel.KEY_A) and not collision.check_wall_left(self.x):
             self.x -= self.speed
@@ -603,8 +691,10 @@ class Slime:
             self.x += self.speed
             self.right = True
         # Slime Jumps
-        if (pyxel.btn(pyxel.KEY_SPACE) and 
-            (collision.check_ground(self.y) or collision.check_block_below(self.x, self.y))):
+        if pyxel.btn(pyxel.KEY_SPACE) and (
+            collision.check_ground(self.y)
+            or collision.check_block_below(self.x, self.y)
+        ):
             if self.crouch_time and (time.time() - self.crouch_time <= 1):
                 self.y_velocity = -4.5
             else:
@@ -615,16 +705,22 @@ class Slime:
         if self.is_jumping:
             self.y_velocity += 0.2
             self.y += self.y_velocity
-            if collision.check_ground(self.y) or collision.check_block_below(self.x, self.y):
+            if collision.check_ground(self.y) or collision.check_block_below(
+                self.x, self.y
+            ):
                 self.y_velocity = 0
                 self.is_jumping = False
         else:
-            if not collision.check_ground(self.y) and not collision.check_block_below(self.x, self.y):
+            if not collision.check_ground(self.y) and not collision.check_block_below(
+                self.x, self.y
+            ):
                 self.y_velocity += 0.2
                 self.y += self.y_velocity
         # Slime Crouches
-        if (pyxel.btn(pyxel.KEY_S) and 
-            (collision.check_ground(self.y) or collision.check_block_below(self.x, self.y))):
+        if pyxel.btn(pyxel.KEY_S) and (
+            collision.check_ground(self.y)
+            or collision.check_block_below(self.x, self.y)
+        ):
             self.crouch_time = self.current_time
             self.frozen = True
 
@@ -637,8 +733,9 @@ class Slime:
         global paused
         if paused:
             return
-        
+
         self.slime_skins.get_skin(self.right, self.frozen, self.x, self.y)
+
 
 # Creates a coin class for coin logic
 class Coin:
@@ -656,10 +753,11 @@ class Coin:
         slime_center_y = slime_y + 12
         coin_center_x = self.x + 2
         coin_center_y = self.y + 2
-        if (collecting_distance >= abs(slime_center_x - coin_center_x) and 
-            collecting_distance >= abs(slime_center_y - coin_center_y)):
+        if collecting_distance >= abs(
+            slime_center_x - coin_center_x
+        ) and collecting_distance >= abs(slime_center_y - coin_center_y):
             self.coin_nearby = True
-    
+
     def draw(self):
         if not self.collected:
             if self.value == 1 and not self.coin_nearby:
@@ -669,42 +767,51 @@ class Coin:
                 pyxel.blt(self.x, self.y, 0, 36, 8, 4, 4)
                 self.local_orb_counter += 1
 
+
 # Creates a class for colision detection regarding the slime
-class Collision_detection():
+class Collision_detection:
     def __init__(self, level):
         self.level = level
         global block_pos_l1
         self.block_positions = block_pos_l1
+
     # Checks if Slime touches the left border wall
     def check_wall_left(self, x):
         if x <= self.level.wall_left:
             return True
         return False
+
     # Checks if Slime touches the right border wall
     def check_wall_right(self, x):
         if x >= self.level.wall_right:
             return True
         return False
+
     # Checks if Slime touches the ground
     def check_ground(self, y):
         if y >= self.level.ground_y:
             return True
         return False
-    
+
     def check_block_below(self, x, y):
         global level_completed
         if not level_completed:
             slime_bottom_y = y + 16  # Bottom edge of slime
             for block_x, block_y in self.level.block_positions:
-                if block_x <= x + 7 and x <= block_x + 7:  # Ensure X is within block range
-                    if block_y - 1 <= slime_bottom_y <= block_y + 2:  # Allow slight tolerance
+                if (
+                    block_x <= x + 7 and x <= block_x + 7
+                ):  # Ensure X is within block range
+                    if (
+                        block_y - 1 <= slime_bottom_y <= block_y + 2
+                    ):  # Allow slight tolerance
                         return True
-        return False 
-    
+        return False
+
+
 # Creates a class that manages the full program
 class App:
     def __init__(self):
-        pyxel.init(192, 128, fps = 60)
+        pyxel.init(192, 128, fps=60)
         pyxel.load("resources.pyxres")
 
         self.level1 = None
@@ -729,7 +836,7 @@ class App:
             if self.level1.time_counter.start_time is None:
                 self.level1.restart_level()
             self.level1.update()
-        
+
     def draw(self):
         pyxel.cls(0)
         global level_num
@@ -753,6 +860,7 @@ class App:
         if level_num == 1:
             self.initiate_level()
             self.level1.draw()
+
 
 # Runs the main function if not imported
 if __name__ == "__main__":

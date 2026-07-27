@@ -455,7 +455,11 @@ class Pause_Menu:
     def update(self):
         global paused
         if paused:
-            if pyxel.btnp(pyxel.KEY_P) or self.continue_button.detect_click():
+            if (
+                pyxel.btnp(pyxel.KEY_P)
+                or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_START)
+                or self.continue_button.detect_click()
+            ):
                 paused = False
             if pyxel.btnp(pyxel.KEY_R) or self.restart_button.detect_click():
                 self.restart = True
@@ -574,11 +578,11 @@ class Level1:
         if self.portal.check_if_portal_near(x_pos, y_pos):
             self.finished()
 
-        if pyxel.btnp(pyxel.KEY_P):
+        if pyxel.btnp(pyxel.KEY_P) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_START):
             self.time_counter.stop()
             paused = True
 
-        if pyxel.btnp(pyxel.KEY_R):
+        if pyxel.btnp(pyxel.KEY_R) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_BACK):
             self.restart_level()
 
     def finished(self):
@@ -680,15 +684,19 @@ class Slime:
             else:
                 return
         # Slime moves left
-        if pyxel.btn(pyxel.KEY_A) and not collision.check_wall_left(self.x):
+        if (
+            pyxel.btn(pyxel.KEY_A) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_LEFT)
+        ) and not collision.check_wall_left(self.x):
             self.x -= self.speed
             self.right = False
         # Slime moves right
-        elif pyxel.btn(pyxel.KEY_D) and not collision.check_wall_right(self.x):
+        elif (
+            pyxel.btn(pyxel.KEY_D) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_RIGHT)
+        ) and not collision.check_wall_right(self.x):
             self.x += self.speed
             self.right = True
         # Slime Jumps
-        if pyxel.btn(pyxel.KEY_SPACE) and (
+        if (pyxel.btn(pyxel.KEY_SPACE) or pyxel.btn(pyxel.GAMEPAD1_BUTTON_A)) and (
             collision.check_ground(self.y)
             or collision.check_block_below(self.x, self.y)
         ):
@@ -714,7 +722,11 @@ class Slime:
                 self.y_velocity += 0.2
                 self.y += self.y_velocity
         # Slime Crouches
-        if pyxel.btn(pyxel.KEY_S) and (
+        if (
+            pyxel.btn(pyxel.KEY_S)
+            or pyxel.btn(pyxel.GAMEPAD1_BUTTON_B)
+            or pyxel.btn(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN)
+        ) and (
             collision.check_ground(self.y)
             or collision.check_block_below(self.x, self.y)
         ):
